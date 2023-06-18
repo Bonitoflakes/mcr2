@@ -12,7 +12,7 @@ const initalState = {
 };
 
 export const TodoModal = ({ todoToBeEdited }: { todoToBeEdited: Habit | undefined }) => {
-  const { isModalOpen, closeModal, addHabit, modalType, editHabit, archiveHabit } = useHabits();
+  const { isModalOpen, closeModal, addHabit, modalType, editHabit, archiveHabit, deleteHabit } = useHabits();
 
   console.log("todoToBeEdited", todoToBeEdited);
   const [habit, setHabit] = useState(todoToBeEdited || initalState);
@@ -55,6 +55,13 @@ export const TodoModal = ({ todoToBeEdited }: { todoToBeEdited: Habit | undefine
     setHabit(initalState);
   };
 
+  const deleteTodo = () => {
+    console.log("delete todo");
+    deleteHabit(habit.id);
+    closeModal();
+    setHabit(initalState);
+  };
+
   return (
     <>
       {isModalOpen && (
@@ -62,11 +69,20 @@ export const TodoModal = ({ todoToBeEdited }: { todoToBeEdited: Habit | undefine
           <div className="p-8 bg-gray-800 w-[600px] rounded-3xl">
             <div className="flex justify-between header">
               <h1 className="text-4xl font-bold">{isNew ? "New" : "Edit"} Habit</h1>
-              {isNew ? null : (
-                <button className="px-4 py-2 rounded-full hover:bg-yellow-600" onClick={archiveTodo}>
-                  Archive
+
+              <div className="button-container">
+                <button
+                  className="px-4 py-2 border border-red-400 rounded-full border-red hover:bg-red-600 hover:text-white "
+                  onClick={deleteTodo}
+                >
+                  Delete
                 </button>
-              )}
+                {isNew ? null : (
+                  <button className="px-4 py-2 rounded-full hover:bg-yellow-600" onClick={archiveTodo}>
+                    Archive
+                  </button>
+                )}
+              </div>
             </div>
 
             <form onSubmit={handleFormSubmit}>
